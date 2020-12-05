@@ -38,7 +38,7 @@ class Character:
 
 class Object:
     def __init__(self, maze):
-        # Set parameters for Object
+        # Set parameters for object
         self.maze = maze
         # Cases
         self.pos_x = 0

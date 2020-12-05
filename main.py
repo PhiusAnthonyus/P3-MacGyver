@@ -13,8 +13,6 @@ window = pygame.display.set_mode((ressource.window_x, ressource.window_y))
 pygame.display.set_caption('Labyrinthe')
 background = ressource.image_bg
 window.blit(background, (0, 0))
-player_x = 30
-player_y = 0
 
 # Start infinite loop
 Main = True
@@ -24,6 +22,8 @@ while Main:
     pygame.display.flip()
     Menu = True
     Game = True
+    Ending = True
+    win = False
     while Menu:
         # Get mouse position
         mouse = pygame.mouse.get_pos()
@@ -38,7 +38,6 @@ while Main:
         title_desc_1 = font_title_bold.render(str("Aidez MacGyver"), 1, (255, 255, 255))
         title_desc_2 = font_title_bold.render(str("à s'échapper !"), 1, (255, 255, 255))
         button_1_1_desc = font_button_bold.render(str("Jouer"), 1, (0, 0, 0))
-        button_1_2_desc = font_button_bold.render(str("Options"), 1, (0, 0, 0))
         credits_desc = font_credits.render(str("Réalisé par Anthony Phu"), 1, (255, 255, 255))
 
         # Loading objects
@@ -54,10 +53,6 @@ while Main:
         if (200 < mouse_x < 400) and (300 < mouse_y < 350):
             window.blit(button1_press, (200, 300))
         window.blit(button_1_1_desc, (255, 300))
-        window.blit(button1_idle, (200, 400))
-        if (200 < mouse_x < 400) and (400 < mouse_y < 450):
-            window.blit(button1_press, (200, 400))
-        window.blit(button_1_2_desc, (235, 400))
         window.blit(credits_desc, (400, 550))
 
         # Refresh frame
@@ -74,18 +69,21 @@ while Main:
                     if (200 < pos_x < 400) and (300 < pos_y < 350):
                         Menu = False
                         Game = True
+                        Ending = False
                         pygame.display.flip()
             # Quit game when pressing key escape
             if event.type == KEYDOWN and event.key == K_ESCAPE:
                 Menu = False
                 Main = False
                 Game = False
+                Ending = False
                 pygame.display.quit()
             # Quit game when closing window
             if event.type == QUIT:
                 Menu = False
                 Main = False
                 Game = False
+                Ending = False
                 pygame.display.quit()
 
     # Maze creation
@@ -98,40 +96,6 @@ while Main:
     player = classes.Character(Maze.maze)
 
     while Game:
-        '''# Loading objects
-        wall = ressource.image_wall
-        floor = ressource.image_floor
-        player = ressource.image_player
-        guardian = ressource.image_guardian
-
-        # Maze content
-        maze = open("Maze.txt", "r")
-        maze_content = maze.read()
-        maze_list = []
-        # Conversion from txt file in list
-        for i in maze_content:
-            if i != '\n':
-                maze_list.append(int(i, base=10))
-        maze.close()
-        # Maze creation
-        i = 0
-        k = 0
-        for i in maze_list:
-            # Coordinate calculation
-            maze_x = k % 15
-            maze_y = k / 15
-            maze_y = int(maze_y)
-            # Texture attribution in each coordinate
-            if i == 0:
-                window.blit(wall, (maze_x * 40, maze_y * 40))
-            elif i == 1:
-                window.blit(floor, (maze_x * 40, maze_y * 40))
-            k += 1
-
-        window.blit(player, (player_x, player_y))
-        window.blit(guardian, (524, 562))
-        pygame.display.flip()'''
-
         # Events
         for event in pygame.event.get():
             # Quit game when closing window
@@ -139,6 +103,7 @@ while Main:
                 Game = False
                 Main = False
                 Menu = False
+                Ending = False
                 pygame.display.quit()
 
             # Keyboard
@@ -146,6 +111,7 @@ while Main:
                 # Quit game when pressing key escape
                 if event.key == K_ESCAPE:
                     Game = False
+                    Ending = False
                     Menu = True
                 elif event.key == K_UP or event.key == K_w:
                     player.move("up")
@@ -178,19 +144,69 @@ while Main:
 
         # Conditions for win
         if Maze.maze[player.pos_x][player.pos_y] == "A" and obj_count == 3:
+            win = True
             print('win')
-            '''window.blit(ressource.image_bg, (0, 0))
-            font_title_bold = pygame.font.SysFont('Arial', 75, True)
-            win = font_title_bold.render(str("Vous avez gagné !"), 1, (255, 255, 255))
-            window.blit(win, (300, 300))'''
             pygame.display.flip()
             Game = False
-            Menu = True
+            Ending = True
         elif Maze.maze[player.pos_x][player.pos_y] == "A" and obj_count != 3:
+            win = False
             print('lose')
-            '''window.blit(ressource.image_bg, (0, 0))
-            font_title_bold = pygame.font.SysFont('Arial', 75, True)
-            lose = font_title_bold.render(str("Vous avez perdu !"), 1, (255, 255, 255))
-            window.blit(lose, (300, 300))'''
             Game = False
-            Menu = True
+            Ending = True
+
+    while Ending:
+        # Get mouse position
+        mouse = pygame.mouse.get_pos()
+        mouse_x = mouse[0]
+        mouse_y = mouse[1]
+        # Loading objects
+        background = ressource.image_bg
+        title = ressource.image_title
+        button1_idle = ressource.image_button_1_idle
+        button1_press = ressource.image_button_1_press
+        # Create text
+        font_ending_bold = pygame.font.SysFont('Arial', 60, True)
+        font_button_bold = pygame.font.SysFont('Arial', 40, True)
+        win_desc = font_ending_bold.render(str("Vous avez gagné !"), 1, (255, 255, 255))
+        lose_desc = font_ending_bold.render(str("Vous avez perdu !"), 1, (255, 255, 255))
+        button_1_1_desc = font_button_bold.render(str("Menu"), 1, (0, 0, 0))
+        # Display objects
+        window.blit(background, (0, 0))
+        if win:
+            window.blit(win_desc, (100, 200))
+        elif not win:
+            window.blit(lose_desc, (100, 200))
+        window.blit(button1_idle, (200, 300))
+        if (200 < mouse_x < 400) and (300 < mouse_y < 350):
+            window.blit(button1_press, (200, 300))
+        window.blit(button_1_1_desc, (255, 300))
+        pygame.display.flip()
+
+        # Window events
+        for event in pygame.event.get():
+            # Mouse position
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    Position = pygame.mouse.get_pos()
+                    pos_x = Position[0]
+                    pos_y = Position[1]
+                    if (200 < pos_x < 400) and (300 < pos_y < 350):
+                        Ending = False
+                        Menu = True
+                        Game = False
+                        pygame.display.flip()
+            # Quit game when pressing key escape
+            if event.type == KEYDOWN and event.key == K_ESCAPE:
+                Menu = False
+                Main = False
+                Game = False
+                Ending = False
+                pygame.display.quit()
+            # Quit game when closing window
+            if event.type == QUIT:
+                Menu = False
+                Main = False
+                Game = False
+                Ending = False
+                pygame.display.quit()
