@@ -135,6 +135,7 @@ while Main:
                 obj_count += 1
 
             # display
+            window.blit(background, (0, 0))
             Maze.maze_display(window)
             window.blit(ressource.image_player, (player.x, player.y))
             window.blit(ressource.image_coin1, (obj1.pos_x * ressource.sprite_size, obj1.pos_y * ressource.sprite_size))
@@ -145,13 +146,11 @@ while Main:
         # Conditions for win
         if Maze.maze[player.pos_x][player.pos_y] == "A" and obj_count == 3:
             win = True
-            print('win')
             pygame.display.flip()
             Game = False
             Ending = True
         elif Maze.maze[player.pos_x][player.pos_y] == "A" and obj_count != 3:
             win = False
-            print('lose')
             Game = False
             Ending = True
 
@@ -161,7 +160,6 @@ while Main:
         mouse_x = mouse[0]
         mouse_y = mouse[1]
         # Loading objects
-        background = ressource.image_bg
         title = ressource.image_title
         button1_idle = ressource.image_button_1_idle
         button1_press = ressource.image_button_1_press
