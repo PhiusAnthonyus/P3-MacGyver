@@ -3,6 +3,7 @@ import random
 
 
 class Character:
+    """Generate the character and add attributes."""
     def __init__(self, maze):
         # Set parameters for character
         # pos_x/y = case number * size sprite
@@ -37,6 +38,7 @@ class Character:
 
 
 class Object:
+    """Generate objects and add attributes."""
     def __init__(self, maze):
         # Set parameters for object
         self.maze = maze
@@ -56,7 +58,7 @@ class Object:
 
 
 def init_items(maze):
-    # Generate multiple objects at different positions
+    """Generate multiple objects at different positions"""
     obj1 = Object(maze)
     obj1.random_position()
     obj2 = Object(maze)

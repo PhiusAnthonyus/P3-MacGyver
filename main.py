@@ -11,7 +11,7 @@ pygame.init()
 window = pygame.display.set_mode((ressource.window_x, ressource.window_y))
 # Window description
 pygame.display.set_caption('Labyrinthe')
-background = ressource.image_bg
+background = pygame.image.load(ressource.image_bg).convert()
 window.blit(background, (0, 0))
 
 # Start infinite loop
@@ -41,9 +41,9 @@ while Main:
         credits_desc = font_credits.render(str("Réalisé par Anthony Phu"), 1, (255, 255, 255))
 
         # Loading objects
-        title = ressource.image_title
-        button1_idle = ressource.image_button_1_idle
-        button1_press = ressource.image_button_1_press
+        title = pygame.image.load(ressource.image_title).convert()
+        button1_idle = pygame.image.load(ressource.image_button_1_idle).convert()
+        button1_press = pygame.image.load(ressource.image_button_1_press).convert()
         # Display objects
         window.blit(background, (0, 0))
         window.blit(title, (50, 50))
@@ -134,13 +134,18 @@ while Main:
                 obj3.pos_y = 15
                 obj_count += 1
 
-            # display
+            # Loading objects
+            image_player = pygame.image.load(ressource.image_player).convert_alpha()
+            coin1 = pygame.image.load(ressource.image_coin1).convert_alpha()
+            coin2 = pygame.image.load(ressource.image_coin2).convert_alpha()
+            coin3 = pygame.image.load(ressource.image_coin3).convert_alpha()
+            # Display objects
             window.blit(background, (0, 0))
             Maze.maze_display(window)
-            window.blit(ressource.image_player, (player.x, player.y))
-            window.blit(ressource.image_coin1, (obj1.pos_x * ressource.sprite_size, obj1.pos_y * ressource.sprite_size))
-            window.blit(ressource.image_coin2, (obj2.pos_x * ressource.sprite_size, obj2.pos_y * ressource.sprite_size))
-            window.blit(ressource.image_coin3, (obj3.pos_x * ressource.sprite_size, obj3.pos_y * ressource.sprite_size))
+            window.blit(image_player, (player.x, player.y))
+            window.blit(coin1, (obj1.pos_x * ressource.sprite_size, obj1.pos_y * ressource.sprite_size))
+            window.blit(coin2, (obj2.pos_x * ressource.sprite_size, obj2.pos_y * ressource.sprite_size))
+            window.blit(coin3, (obj3.pos_x * ressource.sprite_size, obj3.pos_y * ressource.sprite_size))
             pygame.display.flip()
 
         # Conditions for win
@@ -160,9 +165,9 @@ while Main:
         mouse_x = mouse[0]
         mouse_y = mouse[1]
         # Loading objects
-        title = ressource.image_title
-        button1_idle = ressource.image_button_1_idle
-        button1_press = ressource.image_button_1_press
+        title = pygame.image.load(ressource.image_title).convert()
+        button1_idle = pygame.image.load(ressource.image_button_1_idle).convert()
+        button1_press = pygame.image.load(ressource.image_button_1_press).convert()
         # Create text
         font_ending_bold = pygame.font.SysFont('Arial', 60, True)
         font_button_bold = pygame.font.SysFont('Arial', 40, True)

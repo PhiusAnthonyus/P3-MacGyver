@@ -1,7 +1,9 @@
+import pygame
 from images import ressource
 
 
 class Maze:
+    """Creates the maze based on the text file and use the double entry table to display each sprite. """
     def __init__(self):
         self.maze = []
 
@@ -18,6 +20,9 @@ class Maze:
             self.maze = content
 
     def maze_display(self, window):
+        floor = pygame.image.load(ressource.image_floor).convert()
+        wall = pygame.image.load(ressource.image_wall).convert()
+        guardian = pygame.image.load(ressource.image_guardian).convert()
         nb_y = 0
         for line in self.maze:
             nb_x = 0
@@ -25,13 +30,13 @@ class Maze:
                 x = nb_x * ressource.sprite_size
                 y = nb_y * ressource.sprite_size
                 if element == "1":
-                    window.blit(ressource.image_floor, (x, y))
+                    window.blit(floor, (x, y))
                 elif element == "0":
-                    window.blit(ressource.image_wall, (x, y))
+                    window.blit(wall, (x, y))
                 elif element == "A":
-                    window.blit(ressource.image_guardian, (x, y))
+                    window.blit(guardian, (x, y))
                 elif element == "D":
-                    window.blit(ressource.image_floor, (x, y))
+                    window.blit(floor, (x, y))
 
                 nb_x += 1
             nb_y += 1
